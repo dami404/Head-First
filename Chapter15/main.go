@@ -25,10 +25,30 @@ func task4() {
 
 }
 
-func task5() {
-
-	fmt.Println()
+type my struct {
+	a int
 }
+
+func my_func(m *map[string]my) {
+	for _, v := range *m {
+		v.a = 9
+	}
+}
+
+func task5() {
+	var m map[string]my = map[string]my{
+		"foo": my{a: 1},
+		"bar": my{a: 2},
+	}
+
+	// for _, v := range m {
+	// 	v.a = 9
+	// }
+	my_func(&m)
+
+	fmt.Println(m)
+}
+
 func main() {
 	task1()
 	task2()
