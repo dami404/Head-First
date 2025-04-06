@@ -2,17 +2,60 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"net/http"
 )
 
+func viewHandler(resp http.ResponseWriter, req *http.Request) {
+	message := []byte("Hellow wrld!")
+	_, err := resp.Write(message)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 func task1() {
-
+	// http.HandleFunc("/hello", viewHandler)
+	// err := http.ListenAndServe("localhost:8080", nil)
+	// log.Fatal(err)
 	fmt.Println()
 }
 
+func callFunction(passedFunction func()) {
+	passedFunction()
+}
+func callTwice(passedFunction func()) {
+	passedFunction()
+	passedFunction()
+}
+func callWithArguments(passedFunction func(string, bool)) {
+	passedFunction("This sentence is", false)
+}
+func printReturnValue(passedFunction func() string) {
+	fmt.Println(passedFunction())
+}
+func functionA() {
+	fmt.Println("function called")
+}
+func functionB() string {
+	fmt.Println("function called")
+	return "Returning from function"
+}
+func functionC(a string, b bool) {
+	fmt.Println("function called")
+	fmt.Println(a, b)
+}
 func task2() {
-
-	fmt.Println()
+	callFunction(functionA)
+	callTwice(functionA)
+	callWithArguments(functionC)
+	printReturnValue(functionB)
 }
+
+// func task2() {
+
+// 	fmt.Println()
+// }
 
 func task3() {
 
@@ -29,24 +72,9 @@ type my struct {
 	a int
 }
 
-func my_func(m *map[string]my) {
-	for _, v := range *m {
-		v.a = 9
-	}
-}
-
 func task5() {
-	var m map[string]my = map[string]my{
-		"foo": my{a: 1},
-		"bar": my{a: 2},
-	}
 
-	// for _, v := range m {
-	// 	v.a = 9
-	// }
-	my_func(&m)
-
-	fmt.Println(m)
+	fmt.Println()
 }
 
 func main() {

@@ -2,10 +2,14 @@ package main
 
 import (
 	"fmt"
+	"head-first/prose"
 )
 
 func task1() {
-
+	phrases := []string{"my parents", "a rodeo clown"}
+	fmt.Println("A photo of", prose.JoinWithCommas(phrases))
+	phrases = []string{"my parents", "a rodeo clown", "a prize bull"}
+	fmt.Println("A photo of", prose.JoinWithCommas(phrases))
 	fmt.Println()
 }
 
