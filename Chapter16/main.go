@@ -2,49 +2,80 @@ package main
 
 import (
 	"fmt"
+	"html/template"
+	"log"
+	"net/http"
+	"sync"
 )
 
-func addSlice(s []int, e int) {
-	s = append(s, e)
+func check(e error) {
+	if e != nil {
+		log.Fatal(e)
+	}
 }
 
-func addNum(s []int) {
-	s = append(s, 4)
+func viewHandler(resp http.ResponseWriter, req *http.Request) {
+	// message := []byte("signature list goes here")
+	html, err := template.ParseFiles("view.html")
+	check(err)
+	err = html.Execute(resp, nil)
+	check(err)
 }
 
 func task1() {
-	s := make([]int, 2, 2)
-	fmt.Println(s)
-
-	addSlice(s, 1)
-	fmt.Println(s)
-
+	// http.HandleFunc("/guestbook", viewHandler)
+	// err := http.ListenAndServe("localhost:8080", nil)
+	// log.Fatal(err)
 	fmt.Println()
 }
 
+func printIfOdd(m int) {
+	if m%2 == 0 {
+		fmt.Println(m)
+	}
+}
+
 func task2() {
-	s := []int{1, 2, 3}
-	fmt.Println(s)
+	numbers := []int{1, 2, 3, 4, 5}
+	wg := &sync.WaitGroup{}
+	for _, n := range numbers {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			printIfOdd(n)
 
-	addNum(s[0:2])
-	fmt.Println(s)
-
+		}()
+		wg.Wait()
+	}
 	fmt.Println()
 }
 
 func task3() {
-	x := []int{}         // len cap vals
-	x = append(x, 0)     // 1 1 0
-	x = append(x, 1)     // 2 2 0,1
-	x = append(x, 2)     // 3 4 0,1,2
-	y := append(x, 3)    // 4 4 0,1,2,3
-	z := append(x, 4)    // 4 4 0,1,2,4
-	fmt.Println(x, y, z) // 0,1,2,4 0,1,2,3 0,1,2,4
+	s := "12345"
+	runeS := []rune(s)[3:]
+	fmt.Println(string(runeS))
+}
 
-	fmt.Println()
+func a(c chan int) {
+	c <- 1
+	c <- 2
+}
+
+func b(c chan int) {
+	c <- 3
+	c <- 4
 }
 
 func task4() {
+	c1 := make(chan int, 23)
+	c2 := make(chan int, 2)
+	go a(c1)
+	go b(c2)
+
+	fmt.Println(<-c1)
+	fmt.Println(<-c1)
+	fmt.Println(<-c2)
+	fmt.Println(<-c2)
 
 	fmt.Println()
 
